@@ -14,7 +14,7 @@ def complete(tab, opts):
     :return: a string that match with tab
     """
     el = [x for x in tab]
-    pat = "".join(list(map(lambda x: x + "\w*" if re.match("\w", x) else x,
+    pat = "".join(list(map(lambda x: x + r"\w*" if re.match(r"\w", x) else x,
                            el)))
     try:
         opts = [x for x in opts if re.search(pat, x, re.IGNORECASE)]
@@ -84,12 +84,13 @@ def get_comment_format():
 
 def make_box(twidth, bwidth=None):
     b, m, e, i = (s.strip() for s in get_comment_format())
+    m0 = m[0] if m else ''
     bwidth_inner = bwidth - 3 - max(len(b), len(i + e)) if bwidth else twidth + 2
-    sline = b + m + bwidth_inner * m[0] + 2 * m[0]
+    sline = b + m + bwidth_inner * m0 + 2 * m0
     nspaces = (bwidth_inner - twidth) // 2
     mlines = i + m + " " + " " * nspaces
     mlinee = " " + " "*(bwidth_inner - twidth - nspaces) + m
-    eline = i + m + bwidth_inner * m[0] + 2 * m[0] + e
+    eline = i + m + bwidth_inner * m0 + 2 * m0 + e
     return sline, mlines, mlinee, eline
 
 def foldmarker():
